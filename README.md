@@ -1,1 +1,1 @@
-# WALRIs bot
+# WALRIs Bot

@@ -1,1 +1,1 @@
-# DubHacksAWS
+#WALRIs bot

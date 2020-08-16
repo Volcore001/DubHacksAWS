@@ -1,25 +1,42 @@
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import java.net.URI;
 
 // import com.google.gson.Gson;
 // import com.google.gson.GsonBuilder;
-
 import java.util.Map;
 
-public class Handler implements RequestHandler<Map<String,String>, String>
-{
-    //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+import javax.tools.*;
+
+public class Handler implements RequestHandler<Map<String, String>, String> {
     @Override
-    public String handleRequest(Map<String,String> event, Context context)
-    {
-        //LambdaLogger logger = context.getLogger();
-        String response = new String("200 OK");
-        // log execution details
-        // logger.log("ENVIRONMENT VARIABLES: " + gson.toJson(System.getenv()));
-        // logger.log("CONTEXT: " + gson.toJson(context));
-        // process event
-        //logger.log("EVENT TYPE: " + event.getClass().toString());
-        return response;
+    public String handleRequest(Map<String, String> event, Context context) {
+        StringBuffer sourceCode = new StringBuffer();
+        sourceCode.append("public class HelloClass {\n");
+        sourceCode.append("   public String hello() { return \"hello\"; }");
+        sourceCode.append("}");
+
+        InMemoryJavaCompiler imjc = new InMemoryJavaCompiler();
+        try {
+            Class<?> helloClass = imjc.compile("HelloClass", sourceCode.toString());
+            return "success";
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return " nope lol";
+    }
+
+    
+
+}
+
+class JavaSourceFromString extends SimpleJavaFileObject {
+    final String code;
+  
+    JavaSourceFromString(String name, String code) {
+      super(URI.create("string:///" + name.replace('.','/') + Kind.SOURCE.extension),Kind.SOURCE);
+      this.code = code;
     }
 }

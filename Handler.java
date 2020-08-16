@@ -19,13 +19,13 @@ public class Handler implements RequestHandler<Map<String, String>, String> {
         InMemoryJavaCompiler imjc = new InMemoryJavaCompiler();
         try {
             Class<?> helloClass = imjc.compile("HelloClass", sourceCode.toString());
-            return "success";
+            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        return " nope lol";
+        return "ok";
     }
 
     
